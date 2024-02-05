@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Word and Meaning{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <!-- Flash messages -->
+        {% for category, message in messages %}
+            <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <h1>Edit Word and Meaning</h1>
+
+    <form method="POST">
+        <div class="form-group">
+            <label for="new_word">Word:</label>
+            <input type="text" name="new_word" id="new_word" class="form-control" value="{{ word.word }}" required>
+        </div>
+        <div class="form-group">
+            <label for="new_meaning">Meaning:</label>
+            <textarea name="new_meaning" id="new_meaning" class="form-control" rows="4" required>{{ word.meaning }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="header">
+    <h3  style="text-align: center;margin-top: 0.2cm;">Speech to Text / Speech to Speech</h3>
+    <div style="text-align: center; background-color: #ddbcf6; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);">
+        <p style="font-size: 14px; color: #333;">Embark on a linguistic journey where words transform effortlessly. Explore the magic of speech to text and experience the wonder of speech to speech conversion across languages. Here, cutting-edge AI technology is at your fingertips, ready to make language a bridge to new horizons.</p>
+    </div>
+</div>
+
+<script
+    type="module"
+    src="https://gradio.s3-us-west-2.amazonaws.com/3.50.2/gradio.js"
+></script>
+
+<gradio-app src="https://nexusaiapp-aq-s2t-s2t-seamlessm4t-fb.hf.space"></gradio-app>
+
+{% endblock %}

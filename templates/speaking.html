@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}Voice Recording{% endblock %}
+
+{% block content %}
+    <h1>Speaking Practice</h1>
+
+    <style>
+        .rounded-box {
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .help-box {
+            display: none; /* Initially hidden */
+            background-color: #ffffff;
+            border: 3px solid #646161;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 1em;
+        }
+
+        .progress-bar {
+            display: none; /* Initially hidden */
+            background-color: #cce5ff;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            height: 20px;
+            margin-top: 1em;
+        }
+    </style>
+
+    <button id="toggleHelpButton" class="btn btn-info" style="margin-bottom:0.3cm;">Click to see how it works!</button> <!-- Button to show/hide help box -->
+
+    <div class="help-box">
+
+        <h2>How to Record and Analyze</h2>
+        <img src="/static/sp.jpg" alt="Image Description" style="margin-top: -1.25cm; float: right; max-width: 200px;">
+
+        <p>1. Click the "Start Recording" button and speak your text.</p>
+        <p>2. Click the "Stop Recording" button when you are done speaking.</p>
+        <p>3. Your live transcription will appear on the left.</p>
+        <p>4. Click "Analyze and Improve!" to get an improved version of your speaking.</p>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="rounded-box">
+                <p>Record your voice and improve your speaking skills.</p>
+                <button id="startRecord" class="btn btn-primary">Start Recording</button>
+                <button id="stopRecord" class="btn btn-danger" style="display: none;">Stop Recording</button>
+                <div class="initial-transcription-box">
+                    <h3>Live Transcription</h3>
+                    <div id="initialTranscription"></div>
+                </div>
+                <p id="transcription"></p>
+
+                <form id="transcriptionForm" action="/speaking" method="post">
+                    <input type="hidden" id="transcriptionInput" name="transcription">
+                    <button type="submit" class="btn btn-success" id="analyzeButton" disabled>Analyze and Improve!</button>
+                </form>
+
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress" style="width: 0%;" id="progressStatus">0%</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="rounded-box">
+                <h3>Improved versions</h3>
+                <div id="improvedTranscription">
+                    {% if improved_transcription %}
+                    {% for sp in improved_transcription.split('\n') %}
+                    <p>{{ sp|safe }}</p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const startRecordButton = document.getElementById('startRecord');
+        const stopRecordButton = document.getElementById('stopRecord');
+        const transcriptionInput = document.getElementById('transcriptionInput');
+        const transcriptionForm = document.getElementById('transcriptionForm');
+        const transcriptionText = document.getElementById('transcription');
+        const improvedTranscription = document.getElementById('improvedTranscription');
+        const analyzeButton = document.getElementById('analyzeButton');
+        const progressBar = document.getElementById('progressBar');
+        const progressStatus = document.getElementById('progressStatus');
+
+        let isRecording = false;
+
+        let recognition = new webkitSpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+
+        let transcription = '';
+
+        recognition.onresult = (event) => {
+            let interimTranscription = '';
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                if (event.results[i].isFinal) {
+                    transcription += event.results[i][0].transcript;
+                } else {
+                    interimTranscription += event.results[i][0].transcript;
+                }
+            }
+            transcriptionText.textContent = transcription;
+            initialTranscription.textContent = interimTranscription;
+        };
+
+        recognition.onend = () => {
+            stopRecordButton.style.display = 'none';
+            startRecordButton.style.display = 'block';
+            transcriptionInput.value = transcription;
+            isRecording = false; // Recording has ended
+            analyzeButton.disabled = false; // Enable the "Analyze and Improve" button
+        };
+
+        analyzeButton.addEventListener('click', () => {
+            if (!isRecording) { // Check if recording is not in progress
+                // Simulate processing for 3 seconds
+                progressBar.style.display = 'block';
+                let width = 1;
+                const interval = setInterval(() => {
+                    if (width >= 100) {
+                        clearInterval(interval);
+                        progressBar.style.display = 'none';
+                    } else {
+                        width++;
+                        progressStatus.style.width = width + '%';
+                        progressStatus.textContent = width + '%';
+                    }
+                }, 150);
+            }
+        });
+
+        startRecordButton.addEventListener('click', () => {
+            transcription = '';
+            recognition.start();
+            startRecordButton.style.display = 'none';
+            stopRecordButton.style.display = 'block';
+            isRecording = true; // Recording has started
+            analyzeButton.disabled = true; // Disable the "Analyze and Improve" button
+        });
+
+        stopRecordButton.addEventListener('click', () => {
+            recognition.stop();
+        });
+
+        transcriptionForm.addEventListener('submit', (event) => {
+            if (transcription.length === 0) {
+                alert('Please record something before submitting.');
+                event.preventDefault();
+            }
+        });
+
+        function displayImprovedTranscription(improvedText) {
+            improvedTranscription.textContent = improvedText;
+        }
+    </script>
+
+    <script>
+        const toggleHelpButton = document.getElementById('toggleHelpButton');
+        const helpBox = document.querySelector('.help-box');
+
+        toggleHelpButton.addEventListener('click', () => {
+            if (helpBox.style.display === 'none' || helpBox.style.display === '') {
+                helpBox.style.display = 'block'; // Show the help box
+                toggleHelpButton.textContent = 'Hide Help';
+            } else {
+                helpBox.style.display = 'none'; // Hide the help box
+                toggleHelpButton.textContent = 'Show Help';
+            }
+        });
+    </script>
+</div>
+{% endblock %}

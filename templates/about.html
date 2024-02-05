@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}About{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='about.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <div class="info-card">
+        <div class="info-icon">
+            <img src="/static/lin.png" alt="LinkedIn">
+        </div>
+        <div class = "info-text">
+            <p>LinkedIn: <a style="color: white;" href="https://www.linkedin.com/in/AliQambari" target="_blank">AliQambari</a></p>
+        </div>
+    </div>
+
+    <div class="info-card">
+        <div class="info-icon">
+            <img src="/static/em.png" alt="Email">
+        </div>
+        <div class="info-text">
+            <p>Email: <a style="color: white; "href="mailto:uSend@live.com">uSend@live.com</a></p>
+        </div>
+    </div>
+
+    <div class="app-description">
+        <p>
+            Welcome to our state-of-the-art AI-based app, designed to enhance your language-related tasks and simplify the way you work with text.
+        </p>
+        <p>
+            <strong>Key Features:</strong>
+            <ul>
+                <li>Text Paraphrasing: Seamlessly rephrase sentences and paragraphs while preserving the original meaning.</li>
+                <li>Dictionary Lookup: Swiftly access comprehensive word definitions, pronunciation guides, and real-world usage examples.</li>
+                <li>Speaking Practice: Enhance your English speaking skills with AI-generated responses and feedback.</li>
+                <li>Speech-to-Text: Easily convert spoken words into text for accurate transcription.</li>
+                <li>Translation: Seamlessly translate text between various languages with precision and speed.</li>
+                <li>Text-to-Speech: Listen to the text in your preferred language with our natural-sounding voice synthesis.</li>
+                <li>Dictation: Create written content by speaking.</li>
+                <li>Speech-to-Speech: Translate speech from one language to another.</li>
+            </ul>
+        </p>
+        <p>
+            Whether you're a student, a professional writer, a language enthusiast, or in need of language assistance, our app is here to elevate your language tasks. We're committed to providing cutting-edge solutions to make your text-related work more efficient.
+        </p>
+        <p>
+            Our app is constantly evolving, with ongoing improvements and expanded features to deliver the best user experience. We value your feedback and questions, so please don't hesitate to get in touch with us via email or connect with us on social media.
+        </p>
+    </div>
+</div>
+<style>
+    /* Styles for the info cards */
+.info-card {
+    display: flex;
+    align-items: center;
+    margin-top: 0.5cm;
+    margin-bottom: 20px;
+    background-color: #b27eca;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.info-icon {
+    margin-right: 20px;
+}
+
+.info-icon img {
+    width: 30px;
+    height: 30px;
+}
+
+.info-text p {
+    font-size: 16px;
+    margin: 0;
+}
+
+/* Styles for the app description */
+.app-description {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 0.5cm;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Add more styles as needed to make it modern and stylish */
+</style>
+{% endblock %}

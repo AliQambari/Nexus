@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="header">
+    <h3 style="text-align: center;margin-top: 0.2cm;">Speak and Let Your Words Unfold! <em>(Multilingual support)</em></h3>
+    <div style="text-align: center; background-color: #fabf7c; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);">
+        <p style="font-size: 14px; color: #303030;">Enter the world of effortless dictation and automatic language detection. Simply speak, and watch your words transform into text. The magic of AI technology seamlessly bridges the gap between speech and written word, making communication a breeze.</p>
+    </div>
+</div>
+
+<script
+    type="module"
+    src="https://gradio.s3-us-west-2.amazonaws.com/3.50.2/gradio.js"
+></script>
+
+<gradio-app src="https://nexusaiapp-aq-nexus-wsaoi.hf.space"></gradio-app>
+
+{% endblock %}

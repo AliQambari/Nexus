@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit User Data{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Edit User Data</h1>
+    <form method="POST">
+        <div class="form-group">
+            <label for="new_username">New Username:</label>
+            <input type="text" class="form-control" id="new_username" name="new_username" value="{{ user.username }}">
+        </div>
+        <div class="form-group">
+            <label for="new_email">New Email:</label>
+            <input type="email" class="form-control" id="new_email" name="new_email" value="{{ user.email }}">
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

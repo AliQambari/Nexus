@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<style>
+    .btn-primary .click-text {
+        background-color: #ffcccc;
+        border-radius: 5px;
+        padding: 2px 5px;
+    }
+</style>
+<div class="container mt-5">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <!-- Flash messages -->
+        {% for category, message in messages %}
+            <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <h1>Welcome, {{ user.username }}!</h1>
+    <p>This is your dashboard page. You are now logged in and can access all your submission results on this page.</p>
+    <p><a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a></p>
+</div>
+
+<div>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#paraphrases" id="paraphrase-tab">Paraphrases</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#favoritewords" id="favoriteword-tab">Favourite words</a>
+        </li>
+   
+        <!-- Add more tabs if needed -->
+    </ul>
+    <div class="tab-content">
+        <div id="paraphrases" class="tab-pane fade show active">
+            <h3>Paraphrases</h3>
+            <ul>
+                {% for paraphrase in paraphrases %}
+                <li>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <button style="margin-bottom: 0.2cm;" class="btn btn-primary show-button">
+                                {{ paraphrase.prompt[:40] }}
+                                <span style="color: blue; font-weight: bold;">
+                                    <span class="click-text">Click</span> - {{ paraphrase.created_at }}
+                                </span>
+                            </button>
+                            <div class="hidden-text" style="display: none;">
+                                <p>
+                                    Your Text: {{ paraphrase.prompt }}
+                                </p>
+                                <p>
+                                    Paraphrased: {{ paraphrase.response }}
+                                </p>
+                            </div>
+                        </div>
+                        <div>
+                            <form method="post" action="{{ url_for('remove_paraphrase') }}">
+                                <input type="hidden" name="paraphrase_id" value="{{ paraphrase.id }}">
+                                <button type="submit" class="btn btn-danger">Remove</button>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div id="favoritewords" class="tab-pane fade">
+            <h3>Favorite Words</h3>
+            <ul>
+                {% for favorite in favorite_words %}
+                <li>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <button style="margin-bottom: 0.2cm;" class="btn btn-primary show-button">
+                                {{ favorite.word }}
+                            </button>
+                            <div class="hidden-text" style="display: none;">
+                                <p>
+                                    {% for defi in favorite.meaning.split('\n') %}
+                                    <p>{{ defi|safe }}</p>
+                                    {% endfor %}
+                                </p>
+                            </div>
+                        </div>
+                        <div>
+                            <form method="post" action="{{ url_for('remove_favorite') }}">
+                                <input type="hidden" name="word" value="{{ favorite.word }}">
+                                <button type="submit" class="btn btn-danger">Remove</button>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Function to show/hide full text
+    function toggleText(textElement) {
+        if (textElement.style.display === 'none' || textElement.style.display === '') {
+            textElement.style.display = 'block';
+        } else {
+            textElement.style.display = 'none';
+        }
+    }
+
+    // Function to add click event to a button
+    function addClickEvent(button) {
+        button.addEventListener('click', () => {
+            const textElement = button.nextElementSibling;
+            toggleText(textElement);
+        });
+    }
+
+    // Function to initialize show/hide functionality
+    function initializeShowHide() {
+        const showButtons = document.querySelectorAll('.show-button');
+        showButtons.forEach(button => {
+            const textElement = button.nextElementSibling;
+            textElement.style.display = 'none';  // Hide initially
+            addClickEvent(button);
+        });
+    }
+
+    // Handle form submission
+    const removeForms = document.querySelectorAll('form[action^="/remove"]');
+    removeForms.forEach(form => {
+        form.addEventListener('submit', (e) => {
+            // Store the ID of the currently active tab
+            let activeTabId = 'paraphrase-tab';
+            if (document.querySelector('.nav-link.active').getAttribute('href') === '#favoritewords') {
+                activeTabId = 'favoriteword-tab';
+            }
+
+            // Add a hidden input field to remember the active tab
+            const tabInput = document.createElement('input');
+            tabInput.type = 'hidden';
+            tabInput.name = 'active_tab';
+            tabInput.value = activeTabId;
+            form.appendChild(tabInput);
+        });
+    });
+
+    // Initial setup for existing items
+    initializeShowHide();
+
+    // You can call initializeShowHide() after adding a new item to the list
+</script>
+
+
+{% endblock %}

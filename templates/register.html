@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Speech Recognition App - Register{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Left Column - Registration Form -->
+            <div class="col-md-6">
+                <h1 style="margin-top: -1cm;" class="display-4 text-center">Register</h1>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <!-- Flash messages -->
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                <form method="POST" action="{{ url_for('register') }}" class="register-form">
+                    <div class="form-group">
+                        <label for "username">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" required maxlength="20">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required maxlength="20">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
+                </form>
+            </div>
+            
+            <!-- Right Column - Floating Bubbles Grid -->
+            <div class="col-md-6">
+                <div class="bubble-grid">
+                    <div class="bubble bubble1">Text Paraphrasing</div>
+                    <div class="bubble bubble2">AI-Powered Dictionary</div>
+                    <div class="bubble bubble3">Text Summarization</div>
+                    <div class="bubble bubble4">Speaking Practice</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block styles %}
+    <style>
+        /* Custom CSS for register page */
+        .register-form {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .bubble-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 10px; /* Add spacing between bubbles */
+            height: 100%; /* Center the bubbles vertically */
+        }
+
+        .bubble {
+            background: #007BFF; /* Bubble background color */
+            color: #fff; /* Text color inside the bubble */
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            animation: float 5s infinite;
+        }
+
+        .bubble1 {
+            background: #007BFF; /* Bubble background color */
+        }
+
+        .bubble2 {
+            background: #6C757D; /* Different color */
+        }
+
+        .bubble3 {
+            background: #28A745; /* Different color */
+        }
+
+        .bubble4 {
+            background: #FFC107; /* Different color */
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+    </style>
+{% endblock %}

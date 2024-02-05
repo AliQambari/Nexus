@@ -1,0 +1,46 @@
+<!-- error.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="error-container">
+    <h1>Oops! Something went wrong.</h1>
+    <p class="error-message">We're sorry, but there was an internal server error.</p>
+    <p class="error-message">This server does not support PyAudio for live recording use offline method instea.!</p>
+    <div class="error-animation"></div>
+  </div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.error-container {
+  text-align: center;
+  padding: 50px;
+  margin-top: 100px; /* Adjust the top margin as desired */
+}
+
+.error-message {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.error-animation {
+  width: 100px;
+  height: 100px;
+  background-color: #ff5f5f;
+  border-radius: 50%;
+  animation: error-pulse 1s infinite alternate;
+}
+
+@keyframes error-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(255, 95, 95, 0.7);
+  }
+  100% {
+    transform: scale(1.2);
+    box-shadow: 0 0 20px rgba(255, 95, 95, 0.7);
+  }
+}
+</style>
+{% endblock %}

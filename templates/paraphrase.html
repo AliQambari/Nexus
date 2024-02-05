@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Writing Correction - NeuroRecall{% endblock %}
+
+{% block content %}
+
+    <div class="container mt-4">
+        {% with messages = get_flashed_messages() %}
+{% if messages %}
+    <div class="alert alert-warning">
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+{% endwith %}
+        <div class="row">
+            <div class="col-md-6 text-center">
+                <h1>Paraphrase</h1>
+                <div class="d-flex justify-content-center align-items-center">
+                    <form method="POST" class="w-100">
+                        <div class="form-group text-center">
+                            <textarea name="user_prompt" id="user_prompt" class="form-control rounded-lg big-square-text-input" style="font-size: 16px; width: 100%;" rows="5" required oninput="updateWordCount()"></textarea>
+                            <div id="word-count" class="text-right text-secondary">Word limit: 50 words</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2 mx-auto">SUBMIT</button>
+                    </form>
+                </div>
+                <div class="info-box mt-3 mx-auto">
+                    <p class="info-text">Enhance your writing with cutting-edge AI. Submit your text and get expert paraphrasing.</p>
+                    <p class="info-text">Results will be available in your dashboard under the "Paraphrase" tab.</p>
+                </div>                
+            </div>
+            <div class="col-md-6 text-center">
+                <img src="/static/txt.jpg" alt="Your Image" class="img-fluid smaller-image">
+            </div>
+        </div>
+    </div>
+
+    <style>
+    .smaller-image {
+        max-width: 400px; /* Adjust the max width as needed */
+    }
+    .big-square-text-input {
+        height: 200px; /* Set the same value for height to make it a square */
+    }
+    .generated-text p {
+        text-align: justify; /* Align text to the left for better readability */
+        margin-bottom: 10px; /* Add some margin between paragraphs */
+    }
+    .info-box {
+        background-color: lightblue;
+        border-radius: 10px;
+        padding: 10px;
+        text-align: center;
+    }
+    .info-text {
+        font-size: 16px;
+        margin: 0;
+    }
+
+    </style>
+
+<script>
+    function updateWordCount() {
+        const textArea = document.getElementById('user_prompt');
+        const wordCountElement = document.getElementById('word-count');
+        const wordLimit = 50;
+        const words = textArea.value.trim().split(/\s+/);
+        const currentWordCount = words.length;
+        const wordsRemaining = wordLimit - currentWordCount;
+
+        if (wordsRemaining < 0) {
+            // If the word limit is exceeded, truncate the input
+            const truncatedText = words.slice(0, wordLimit).join(' ');
+            textArea.value = truncatedText;
+            wordsRemaining = 0; // No words remaining
+        }
+
+        wordCountElement.textContent = `Word limit: ${wordsRemaining} words remaining`;
+    }
+</script>
+
+</body>
+</html>
+{% endblock %}

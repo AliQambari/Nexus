@@ -1,0 +1,14 @@
+#wordBoxes {
+    text-align: right;
+}
+
+.word-box {
+    display: inline-block;
+    margin-left: 5px;
+    padding: 5px 10px;
+    background-color: rgb(99, 196, 99);
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}

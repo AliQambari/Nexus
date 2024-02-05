@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}NexusAI - Home{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='animate.min.css') }}">
+    <style>
+        /* Additional custom styles can be added here */
+        .container {
+            text-align: center;
+            
+        }
+        .heading {
+            margin-top: 50px;
+        }
+        .buttons {
+            margin-top: 50px;
+        }
+        .image {
+            max-width: 200px;  /* Adjust the width as needed */
+            height: auto;
+            margin-bottom: 20px;
+            margin-top: 25px;
+        }
+        .box {
+            background-color: rgba(255, 255, 255, 0.1); /* Box background color with opacity */
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 30px; /* Adjust margin as needed */
+        }
+        .square-button {
+            width: 150px;
+            height: 120px;
+            color: #fff; /* Button text color */
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .square-button:hover {
+            background-color: #607aa1; /* Button background color on hover */
+        }
+        .paraphrase-button {
+            background-color: #48cb9b; /* Pastel pink */
+        }
+        .translation-button {
+            background-color: #8a48cb; /* Pastel pink */
+        }
+        .writing-button {
+            background-color: #e36242; /* Pastel pink */
+        }
+        .dictionary-button {
+            background-color: #cc4053; /* Pastel blue */
+        }
+
+        .speaking-button {
+            background-color: #0099ff; /* Pastel yellow */
+        }
+        .dictation-button {
+            background-color: #ffc400; /* Pastel yellow */
+        }
+        .image {
+            max-width: 10cm;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        
+        {% if 'user_id' in session %}
+        <img src="{{ url_for('static', filename='lg.png') }}" alt="logo" class=" image animate__animated animate__fadeIn">
+        <div class="button-container animate__animated animate__fadeIn">
+            <a class="square-button paraphrase-button" href="{{ url_for('paraphrase') }}">Paraphrase</a>
+            <a class="square-button writing-button" href="{{ url_for('s2t_s2s') }}">Speech To Text/Speech</a>
+            <a class="square-button translation-button" href="{{ url_for('t2t_t2s') }}">Translation/Text to Speech</a>
+            <a class="square-button dictation-button" href="{{ url_for('dictation') }}">Dictation (Advanced)</a>
+            <a class="square-button dictionary-button" href="{{ url_for('dictionary') }}">Dictionary</a>
+            <a class="square-button speaking-button" href="{{ url_for('speaking') }}">Speaking</a>
+        </div>
+    {% else %}
+    <img  src="{{ url_for('static', filename='lg.png') }}" alt="logo" class="image animate__animated animate__fadeIn">
+    <div class="box animate__animated animate__fadeInDown">
+        <h2 class="heading">Demo V1.2👋</h2>
+        <p><strong>"Our app empowers users to master language tasks effortlessly. Whether it's rewriting text with precision, understanding words inside out, or honing spoken language skills, we're your ally in achieving language excellence. Elevate your communication with us.</strong></p>
+        <div class="buttons mt-5">
+            <a class="btn btn-primary btn-lg" href="{{ url_for('register') }}">Register</a>
+            <a class="btn btn-primary btn-lg" href="{{ url_for('login') }}">Login</a>
+        </div>
+    </div>
+    {% endif %}
+    </div>
+{% endblock %}
